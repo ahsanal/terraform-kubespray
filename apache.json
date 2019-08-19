@@ -1,0 +1,35 @@
+{
+  "variables": {
+        "gcloud_account_json": "/home/ihusain1994/creds/serviceaccount.json",
+        "gcloud_project_id": "polar-processor-228413"
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "account_file": "/home/ihusain1994/creds/serviceaccount.json",
+      "project_id": "polar-processor-228413",
+      "ssh_username":"ubuntu",
+      "source_image_family": "ubuntu-1804-lts",
+      "image_name": "apache-golden-{{timestamp}}",
+      "zone": "northamerica-northeast1-a",
+      "machine_type":"n1-standard-1",
+      "disk_size": "20",
+      "on_host_maintenance":"TERMINATE",
+      "image_family":"apache"
+    }
+  ],
+  "provisioners": [
+      {
+           "type": "shell",
+           "inline": [
+                "sudo apt-get clean",
+                "sudo apt-get update",
+                "sudo apt-get -y upgrade",
+                "sudo apt-get -y install apache2 htop stress",
+                "sudo ufw allow 'Apache Full'",
+		"touch $HOME/text1.txt"
+           ]
+      }
+
+  ]
+}
